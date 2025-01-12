@@ -23,3 +23,19 @@ jobs:
           cd starter/frontend
           npm ci
           npm run lint
+  testing-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v3
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+          cache: 'npm'
+          cache-dependency-path: starter/frontend/package-lock.json
+      - name: testing-frontend
+        run: |
+          cd starter/frontend
+          npm ci
+          npm test
