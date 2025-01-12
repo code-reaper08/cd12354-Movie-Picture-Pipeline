@@ -48,6 +48,9 @@ jobs:
         run: |
           export BACKEND_APP_URL=$(kubectl get svc backend -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}{.status.loadBalancer.ingress[0].ip}')
           echo $BACKEND_APP_URL
+
+          curl $BACKEND_APP_URL/movies
+          
           cd starter/frontend
           IMAGE_TAG=${{ github.sha }}  # Get the commit SHA
           docker build --build-arg=REACT_APP_MOVIE_API_URL=http://$BACKEND_APP_URL --tag 435206346441.dkr.ecr.us-east-1.amazonaws.com/frontend:$IMAGE_TAG .
