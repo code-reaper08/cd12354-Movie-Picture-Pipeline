@@ -18,8 +18,9 @@ jobs:
           node-version: latest
           cache: 'npm'
           cache-dependency-path: starter/frontend/package-lock.json
+      - name: List files
         run: |
-          ls -R starter
+          ls -R starter/  # Ensure 'starter/frontend' directory exists
 
   linting-frontend:
     needs: setup-job
