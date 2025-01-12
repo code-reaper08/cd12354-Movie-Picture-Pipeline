@@ -21,6 +21,7 @@ jobs:
 
   linting-frontend:
     needs: [setup-job]
+    runs-on: ubuntu-latest
     steps:
       - name: linting-frontend
         run: |
@@ -30,6 +31,7 @@ jobs:
 
   testing-frontend:
     needs: [setup-job]
+    runs-on: ubuntu-latest
     steps:
       - name: testing-frontend
         run: |
@@ -39,6 +41,7 @@ jobs:
 
   building-frontend:
     needs: [setup-job, linting-frontend, testing-frontend]
+    runs-on: ubuntu-latest
     steps:
       - name: building-frontend
         run: |
