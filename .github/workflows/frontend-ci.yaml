@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  setup-job:
+  linting-frontend:
     runs-on: ubuntu-latest
     steps:
       - name: Code Checkout
@@ -18,36 +18,38 @@ jobs:
           node-version: latest
           cache: 'npm'
           cache-dependency-path: starter/frontend/package-lock.json
-      - name: List files
+      - name: lint-check
         run: |
-          ls -R starter/  # Ensure 'starter/frontend' directory exists
-
-  linting-frontend:
-    needs: setup-job
-    runs-on: ubuntu-latest
-    steps:
-      - name: linting-frontend
-        run: |
-          ls -R starter/
           cd starter/frontend
           npm ci
           npm run lint
-
   testing-frontend:
-    needs: setup-job
     runs-on: ubuntu-latest
     steps:
+      - name: Code Checkout
+        uses: actions/checkout@v3
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+          cache: 'npm'
+          cache-dependency-path: starter/frontend/package-lock.json
       - name: testing-frontend
         run: |
           cd starter/frontend
           npm ci
           npm test
-
   building-frontend:
     needs: [linting-frontend, testing-frontend]
     runs-on: ubuntu-latest
     steps:
-      - name: building-frontend
+      - name: Code Checkout
+        uses: actions/checkout@v3
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+      - name:  build-frontend
         run: |
           cd starter/frontend
           docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 --tag=mp-frontend:latest .
