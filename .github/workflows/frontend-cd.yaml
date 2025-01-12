@@ -36,11 +36,14 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
+
       - name: Amazon ECR "Login" Action for GitHub Actions
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2.0.1
+
       - name: Update the Kubeconfig
         run: aws eks --region us-east-1 update-kubeconfig --name cluster
+
       - name: Build, tag, and push docker image to Amazon ECR
         run: |
           export BACKEND_APP_URL=$(kubectl get svc backend -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}{.status.loadBalancer.ingress[0].ip}')
@@ -49,9 +52,13 @@ jobs:
           IMAGE_TAG=${{ github.sha }}  # Get the commit SHA
           docker build --build-arg=REACT_APP_MOVIE_API_URL=http://$BACKEND_APP_URL --tag 435206346441.dkr.ecr.us-east-1.amazonaws.com/frontend:$IMAGE_TAG .
           docker push 435206346441.dkr.ecr.us-east-1.amazonaws.com/frontend:$IMAGE_TAG
+
       - name: Deploy to EKS 
         run: |
+            aws eks update-kubeconfig --name cluster --region us-east-1
+            
             cd starter/frontend/k8s
             IMAGE_TAG=${{ github.sha }}  # Get the commit SHA
             kustomize edit set image frontend=435206346441.dkr.ecr.us-east-1.amazonaws.com/frontend:$IMAGE_TAG
-            kustomize build | kubectl apply -f -
+            cat starter/fron
+            kustomize build | kubectl apply -f -cd frontend/k8s && kustomize build | kubectl apply -f -
