@@ -60,4 +60,4 @@ jobs:
             cd starter/frontend/k8s
             IMAGE_TAG=${{ github.sha }}  # Get the commit SHA
             kustomize edit set image frontend=435206346441.dkr.ecr.us-east-1.amazonaws.com/frontend:$IMAGE_TAG
-            kustomize build | kubectl apply -f -cd frontend/k8s && kustomize build | kubectl apply -f -
+            kustomize build | kubectl apply -f -
