@@ -25,6 +25,7 @@ jobs:
     steps:
       - name: linting-frontend
         run: |
+          ls -R starter/
           cd starter/frontend
           npm ci
           npm run lint
