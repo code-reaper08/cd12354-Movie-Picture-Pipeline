@@ -37,14 +37,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Amazon ECR "Login" Action for GitHub Actions
+      - name: Amazon ECR login
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2.0.1
 
       - name: Update the Kubeconfig
         run: aws eks --region us-east-1 update-kubeconfig --name cluster
 
-      - name: Build, tag, and push docker image to Amazon ECR
+      - name: Build, tag, and push docker image to ECR
         run: |
           export BACKEND_APP_URL=$(kubectl get svc backend -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}{"\n"}{.status.loadBalancer.ingress[0].ip}')
           echo $BACKEND_APP_URL
