@@ -20,7 +20,7 @@ jobs:
           cache-dependency-path: starter/frontend/package-lock.json
 
   linting-frontend:
-    needs: [setup-job]
+    needs: setup-job
     runs-on: ubuntu-latest
     steps:
       - name: linting-frontend
@@ -30,7 +30,7 @@ jobs:
           npm run lint
 
   testing-frontend:
-    needs: [setup-job]
+    needs: setup-job
     runs-on: ubuntu-latest
     steps:
       - name: testing-frontend
@@ -40,7 +40,7 @@ jobs:
           npm test
 
   building-frontend:
-    needs: [setup-job, linting-frontend, testing-frontend]
+    needs: [linting-frontend, testing-frontend]
     runs-on: ubuntu-latest
     steps:
       - name: building-frontend
