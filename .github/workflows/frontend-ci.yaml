@@ -18,23 +18,29 @@ jobs:
           node-version: latest
           cache: 'npm'
           cache-dependency-path: starter/frontend/package-lock.json
+
   linting-frontend:
     needs: [setup-job]
+    steps:
       - name: linting-frontend
         run: |
           cd starter/frontend
           npm ci
           npm run lint
+
   testing-frontend:
     needs: [setup-job]
+    steps:
       - name: testing-frontend
         run: |
           cd starter/frontend
           npm ci
           npm test
+
   building-frontend:
     needs: [setup-job, linting-frontend, testing-frontend]
-      - name:  building-frontend
+    steps:
+      - name: building-frontend
         run: |
           cd starter/frontend
           docker build --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 --tag=mp-frontend:latest .
